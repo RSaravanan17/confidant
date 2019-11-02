@@ -5,15 +5,25 @@ from flask import request
 from flask import jsonify
 from flask_cors import CORS, cross_origin
 
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import auth
+
 import requests
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/v1/blahblah": {"origins": "*"}})
+cors = CORS(app, resources={r"/v1/authenticate": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/health')
 def index():
     return "I'm alive"
+
+@app.route('/v1/authenticate', methods=['POST'])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
+def authenticate():
+    cred = credentials.Certificate("/etc/confidant/firebase-service-account.json")
+    firebase_admin.initialize_app(cred)
 
 
 @app.route('/v1/blahblah', methods=['GET'])
