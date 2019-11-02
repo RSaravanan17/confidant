@@ -51,7 +51,7 @@ def speechToVid():
     wavoutfilename = data['wavoutfilename']
     vidoutfilename = data['vidoutfilename']
 
-    userText = speechtotext.speechToText(wavinfilename)
+    userText = speechtotext.speechToText('../public/audio/' + wavinfilename + '.wav')
 
     # somehow figure out what to say to the user
     responseText = ''
