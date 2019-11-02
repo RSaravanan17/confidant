@@ -17,11 +17,18 @@ To install dependencies, use pip3.
 $ pip3 install -r requirements.txt
 ```
 
+Next, ensure you have credentials stored in the `/etc/confidant/` directory.
+
+There should be these files in the directory:
+
+- `firebase-service-account.json`
+
 ## Run instructions
 This API is written in Flask. To run the Flask app, use the following:
 
 ```
-$ sudo env FLASK_APP=app.py flask run -h 0.0.0.0 -p 443
+$ chmod u+x runflask.sh
+$ ./runflask.sh
 ```
 
 ## Using the API
