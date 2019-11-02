@@ -23,7 +23,7 @@ class TextToSpeech(object):
 	    }
 	    response = requests.post(fetch_token_url, headers=headers)
 	    self.access_token = str(response.text)
-    def save_audio(self):
+    def save_audio(self, filename):
 	    base_url = 'https://southcentralus.tts.speech.microsoft.com/'
 	    path = 'cognitiveservices/v1'
 	    constructed_url = base_url + path
@@ -44,7 +44,8 @@ class TextToSpeech(object):
 
 	    response = requests.post(constructed_url, headers=headers, data=body)
 	    if response.status_code == 200:
-	        with open('sample-' + self.timestr + '.wav', 'wb') as audio:
+	        #with open('sample-' + self.timestr + '.wav', 'wb') as audio:
+	        with open(filename + '.wav', 'wb') as audio:
 	            audio.write(response.content)
 	            print("\nStatus code: " + str(response.status_code) +
 	                  "\nYour TTS is ready for playback.\n")
@@ -53,17 +54,17 @@ class TextToSpeech(object):
 	              "\nSomething went wrong. Check your subscription key and headers.\n")
 
 
-def textToSpeech(text):
+def textToSpeech(text, filename):
+	# TODO: where to save file?
     subscription_key = "9474dce2238e4429ac391b74f890e909"
     print ("hi")
     app = TextToSpeech(subscription_key, text)
     print ("hi2")
     app.get_token()
     print ("hi3")
-    app.save_audio()
+    app.save_audio(filename)
 
-textToSpeech("l'hopital's")
-
+textToSpeech("Subtle curry traits", "lmao")
 
 
 

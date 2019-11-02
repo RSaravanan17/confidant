@@ -31,6 +31,7 @@ class SpeechToText():
 		# Checks result.
 		if result.reason == speechsdk.ResultReason.RecognizedSpeech:
 		    print("Recognized: {}".format(result.text))
+		    return result.text
 		elif result.reason == speechsdk.ResultReason.NoMatch:
 		    print("No speech could be recognized: {}".format(result.no_match_details))
 		elif result.reason == speechsdk.ResultReason.Canceled:
@@ -38,11 +39,14 @@ class SpeechToText():
 		    print("Speech Recognition canceled: {}".format(cancellation_details.reason))
 		    if cancellation_details.reason == speechsdk.CancellationReason.Error:
 		        print("Error details: {}".format(cancellation_details.error_details))
+        return ""
 
 
 def speechToText(fn):
 	stt = SpeechToText("9474dce2238e4429ac391b74f890e909", fn)
-	stt.getTextFromSpeech();
+	res = stt.getTextFromSpeech()
+	return res
+	# TODO: return text
 
 speechToText("sample-20191102-1402.wav")
 
