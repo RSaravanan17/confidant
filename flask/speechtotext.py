@@ -42,7 +42,8 @@ class SpeechToText():
 
 def speechToText(fn):
 	stt = SpeechToText("9474dce2238e4429ac391b74f890e909", fn)
-	stt.getTextFromSpeech();
+	stt.getTextFromSpeech()
+	# TODO: return text
 
 speechToText("sample-20191102-1402.wav")
 

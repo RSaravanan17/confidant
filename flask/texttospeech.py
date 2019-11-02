@@ -53,7 +53,8 @@ class TextToSpeech(object):
 	              "\nSomething went wrong. Check your subscription key and headers.\n")
 
 
-def textToSpeech(text):
+def textToSpeech(text, filename):
+	# TODO: where to save file?
     subscription_key = "9474dce2238e4429ac391b74f890e909"
     print ("hi")
     app = TextToSpeech(subscription_key, text)

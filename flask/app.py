@@ -9,6 +9,10 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import auth
 
+import texttospeech
+import speechtotext
+import voca.utils.inference
+
 import requests
 
 app = Flask(__name__)
@@ -19,11 +23,50 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 def index():
     return "I'm alive"
 
-@app.route('/v1/authenticate', methods=['POST'])
+# @app.route('/v1/authenticate', methods=['POST'])
+# @cross_origin(origin='*',headers=['Content-Type','Authorization'])
+# def authenticate():
+#     cred = credentials.Certificate("/etc/confidant/firebase-service-account.json")
+#     firebase_admin.initialize_app(cred)
+
+@app.route('/v1/speechToVid', methods=['GET','POST'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
-def authenticate():
-    cred = credentials.Certificate("/etc/confidant/firebase-service-account.json")
-    firebase_admin.initialize_app(cred)
+def speechToVid():
+    try:
+        data = request.args.to_dict()
+    except ValueError:
+        return jsonify({'error': "JSON data invalid or no input data"})
+
+    # sanitization checks for input data
+    if 'wavinfilename' not in data or data['wavinfilename'] is None or data['wavinfilename'] == '':
+        return jsonify({'error': "No input .wav file name specified"})
+
+    if 'wavoutfilename' not in data or data['wavoutfilename'] is None or data['wavoutfilename'] == '':
+        return jsonify({'error': "No output .wav file name specified"})
+
+    if 'vidoutfilename' not in data or data['vidoutfilename'] is None or data['vidoutfilename'] == '':
+        return jsonify({'error': "No output video file name specified"})
+
+    wavinfilename = data['wavinfilename']
+    wavoutfilename = data['wavoutfilename']
+    vidoutfilename = data['vidoutfilename']
+
+    userText = speechtotext.speechToText(wavinfilename)
+
+    # somehow figure out what to say to the user
+    responseText = ''
+    texttospeech.textToSpeech(responseText, wavoutfilename)
+
+    tf_model_fname = ''
+    ds_fname = ''
+    audio_fname = '../public/audio/' + wavoutfilename + '.wav'
+    template_fname = ''
+    condition_idx = ''
+    out_path = '../public/video/' + vidoutfilename + '.mp4'
+        
+    inference(tf_model_fname, ds_fname, audio_fname, template_fname, condition_idx, out_path)
+
+    return jsonify({'vidfilename': vidoutfilename})
 
 
 @app.route('/v1/blahblah', methods=['GET'])
@@ -44,8 +87,6 @@ def blahblah():
     # prepare for Shopper API call
     clean_data = {"auditClientIp": data['clientIp'], "email": data['email']}
     headers = {'Accept': 'application/json', 'Content-Type': 'application/json', 'Access-Control-Allow-Credentials': 'true'}
-    cert = (ssl_crt_path, ssl_key_path)
-    headers['Authorization'] = 'sso-jwt ' + _get_jwt(cert)
 
     print(clean_data)
 
@@ -61,21 +102,3 @@ def blahblah():
         # no duplicate email
         return_response['exists'] = True
     return jsonify(return_response)
-
-
-def _get_jwt(cert):
-    """
-    Attempt to retrieve the JWT associated with the cert/key pair from SSO
-    :param cert:
-    :return:
-    From: https://godaddy.slack.com/archives/C02Q2MEH8/p1564512016073700
-    """
-    try:
-        response = requests.post(sso_endpoint, data={'realm': 'cert'}, cert=cert)
-        response.raise_for_status()
-
-        body = json.loads(response.text)
-        return body.get('data')  # {'type': 'signed-jwt', 'id': 'XXX', 'code': 1, 'message': 'Success', 'data': JWT}
-    except Exception as e:
-        print(e.message)
-    return None
