@@ -1,11 +1,15 @@
 import Head from 'next/head'
+
 import dynamic from 'next/dynamic'
 
 const HeadView = dynamic(
   () => import('../components/headView'),
   { ssr: false }
 )
-
+const AudioRecord = dynamic(
+    () => import('../components/audioRecord'),
+    { ssr: false }
+)
 const App = () => (
     <div>
     
@@ -14,10 +18,9 @@ const App = () => (
             <link rel='icon' href='/favicon.ico' /> 
         </Head>
         <div className="fullscreen">
-            <HeadView />
-            outside
+        <HeadView />
+        <AudioRecord />
         </div>
-
         <style jsx>{`
             .fullscreen {
                 width: 100vw;

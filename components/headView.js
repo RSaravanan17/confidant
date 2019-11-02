@@ -6,8 +6,6 @@ const HeadView = () => (
         <script type="text/javascript" src="/headViewScript.js"></script>
         <script type="text/javascript" src="/webgazer.js"></script>
     </Head>
-    Test
-
     <style jsx>{`
         .headViewer {
             width: 100%;
