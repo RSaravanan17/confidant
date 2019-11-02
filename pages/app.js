@@ -29,7 +29,6 @@ const App = () => (
                 padding-left: 0px;
                 margin: 0;
             }
-            .
         `}</style>
     </div>
   )
