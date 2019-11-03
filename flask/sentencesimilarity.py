@@ -34,9 +34,11 @@ def getNextResponse(score):
 	global currentQuestionId
 	currentQuestionId = currentQuestionId + 1
 	return emoResponse + getQuestion(currentQuestionId)
+
 def getFirstQuestion():
 	currentQuestionId = 0
 	return idToQuestion[0]
+
 def getQuestion(id):
 	if(id > len(idToQuestion)):
 		return ""

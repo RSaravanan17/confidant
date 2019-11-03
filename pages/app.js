@@ -29,7 +29,7 @@ const App = () => (
                 width: 100vw;
                 height: 100vh;
                 color: 'black';
-                position: absolute;
+                position: fixed;
                 overflow: hidden;
                 padding-right: 0px;
                 padding-left: 0px;

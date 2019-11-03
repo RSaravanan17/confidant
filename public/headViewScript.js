@@ -7,6 +7,7 @@ function waitForWebgazer(){
             document.getElementById("vidshow").innerHTML = `
                 <video id="videoitself" autoplay src="./video.mp4"></video>
             `
+            window.eyeRecord = true
         });
         webgazer.setGazeListener(function(data, elapsedTime){
             if (data == null) {
