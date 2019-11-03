@@ -46,9 +46,13 @@ function waitForWebAudio(){
     if(typeof WebAudioRecorder !== "undefined" && typeof $ !== "undefined"){
         document.getElementById("startButton").addEventListener("click", function(){
             startRec();
+            document.getElementById("startButton").disabled = true;
+            document.getElementById("stopButton").disabled = false;
         });
         document.getElementById("stopButton").addEventListener("click", function(){
             recorder.finishRecording();
+            document.getElementById("startButton").disabled = false;
+            document.getElementById("stopButton").disabled = true;
             console.log("finish recording")
         });
         
