@@ -36,7 +36,11 @@ function startRec(){
                 data: fd,
                 processData: false,
                 contentType: false
-            });
+            }, function(data){ 
+                let score = data.score 
+                console.log("new score " + score)
+                $("#reportCard").append ("<p>Response Empathy Score: " + (Math.floor((score * 10000)) / 100) + "%</p>")
+            })
         }
         recorder.startRecording();
     })   

@@ -19,6 +19,10 @@ const App = () => (
         <div className="fullscreen">
             <HeadView />
             <AudioRecord />
+            
+            <div id="reportCard">
+                <div id="eyeContactScore"></div>
+            </div>
         </div>
         <style jsx>{`
             .fullscreen {
@@ -31,6 +35,11 @@ const App = () => (
                 padding-left: 0px;
                 margin: 0;
             }
+            #reportCard {
+                top: 30%;
+                height: 70%;
+            }
+
         `}</style>
     </div>
   )
