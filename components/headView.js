@@ -72,7 +72,7 @@ class HeadView extends React.Component {
                 <style jsx>{`
                     .headViewer {
                         width: 100%;
-                        height: 90%;
+                        height: 45%;
                         color: 'yellow';
                     }
                 `}</style>
@@ -84,3 +84,4 @@ class HeadView extends React.Component {
 }
 
 export default HeadView
+

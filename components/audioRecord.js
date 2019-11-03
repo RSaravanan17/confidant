@@ -9,12 +9,37 @@ const AudioRecord = () => (
 			  crossorigin="anonymous"></script>
             <script src="/audioRecordScript.js"></script>
             <script src="/WebAudioRecorder.js"></script>
-            
+              
         </Head>
         <div className="audioRecord">
-            <button id="startButton" >Start</button>
-            <button id="stopButton">Stop</button>
+            <p id="recordingLabel">Audio File Recording:</p>
+            <button id="startButton" className = "ssbutton">Start</button>
+            <button id="stopButton" className = "ssbutton" disabled>Stop</button>
+            <style jsx>{`
+                    .audioRecord {
+                        display: flex;
+                        flex-direction: row;
+                    }
+
+                    .ssbutton {
+                        margin-left: 1%;
+                        padding: 15px;
+                        font
+                    }
+
+                    #startButton {
+                        background: #1c4587;
+                        color: #f3f3f3ff;
+                    }
+
+                    #stopButton {
+                        background: #434343ff;
+                        color: #f3f3f3ff;
+                    }
+
+            `}</style>
         </div>
+        
         
     </div>
 )
