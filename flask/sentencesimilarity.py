@@ -7,9 +7,9 @@ import random
 url = "https://twinword-text-similarity-v1.p.rapidapi.com/similarity/"
 
 currentQuestionId = 0
-idToQuestion = ["My dog died. ", "I really miss my dog. His name was Buddy.", "I hope Buddy is happy, wherever he is.", "I got promoted at work!", "I am getting married!", "My girlfriend broke up with me."]
-goodResponses = ["Thanks for understanding, ", "I'm grateful that you get it, ", "You're a good listener, "]
-badResponses = ["You're so rude, ", "Why would you say that? " , "Don't be so mean, "]
+idToQuestion = ["My dog died. ", "I really miss my dog. His name was Buddy. ", "I hope Buddy is happy, wherever he is. ", "I got promoted at work! ", "I am getting married! ", "My girlfriend broke up with me. "]
+goodResponses = ["Thanks for understanding. ", "I'm grateful that you get it. ", "You're a good listener. "]
+badResponses = ["You're so rude. ", "Why would you say that. " , "Don't be so mean. "]
 
 questionToAnswer = list()
 questionToAnswer.append(["I'm really sorry to hear that, it will get better soon.", "My deepest condolences, I empathize with you."])
@@ -17,7 +17,7 @@ questionToAnswer.append(["It's okay to miss loved ones. ", "I miss him too", "I'
 questionToAnswer.append(["May he rest in peace in heaven.", "I am sure he is happy too.", "He is happy in paradise."])
 questionToAnswer.append(["That's great to hear!", "Super cool! Keep it up!", "You did a great job!"])
 questionToAnswer.append(["Wow you are so lucky!", "Wishing you a happy and loving life!", "Congratulations on the engagement!"])
-questionToAnswer.append(["I'm so sorry.", "You will get through this, don't worry.", "You are better off without her, you are an amazing."])
+questionToAnswer.append(["I'm so sorry.", "You will get through this, don't worry.", "You are better off without her, you are an amazing.", "It's ok man, you'll find somone else."])
 
 headers = {
     'x-rapidapi-host': "twinword-text-similarity-v1.p.rapidapi.com",
