@@ -39,7 +39,4 @@ def computeSentenceSimilarity(question, usersaid):
 	return maxSim
 
 
-question = "My dog died."
-
-usersaid = "I'm sorry about what you are going through, and I want you to know that it will get better soon."
-print(computeSentenceSimilarity(question, usersaid))
+	
