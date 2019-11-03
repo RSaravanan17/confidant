@@ -10,6 +10,7 @@ import os
 
 import firebase_admin
 from firebase_admin import credentials
+import math
 from firebase_admin import auth
 
 import texttospeech
@@ -95,6 +96,7 @@ def audioupload():
 
     similarity = sentencesimilarity.computeSentenceSimilarity(userText)
     botResponse = sentencesimilarity.getNextResponse(similarity)
+    similarity = math.sqrt(similarity)
     textToVid(botResponse, "../tempupload/botwav.wav")
 
     return jsonify({'score' : similarity})
