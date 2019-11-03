@@ -4,20 +4,48 @@ import buttonInstance from "./calibration"
 class HeadView extends React.Component {
     constructor(props){
         super(props);
-        this.state = {number: 1, left:'350px', top:'25px'};
+        this.state = {disp:'block', height:'50px', width:'50px', background:'#1c4587', color:'white', position:'absolute', number: 1, left:'350px', top:'25px'};
         this.counter = 5;
-        this.leftDists = ['350px', '600px', '150px', '800px', '350px', '600px'];
+        this.leftDists = ['300px', '1200px', '100px', '1400px', '300px', '1200px'];
         this.topDists = ['25px', '325px', '625px'];
     }
 
     onClick = () => {
         if (this.counter > 1) {
             this.counter--;
-        } else {
+        } else if (this.state.number < 6) {
             this.counter = 5;
             var curNumber = this.state.number;
             this.setState({number: curNumber + 1, left: this.leftDists[curNumber], top: this.topDists[Math.floor(curNumber / 2)]});
+        } else {
+            this.setState({height:'100px', width:'200px', background:'green', color:'black', number: 'Done', left: '700px', top: '350px'});
         }
+
+        if (this.state.number == 'Done') {
+            this.setState({disp:'none'});
+            this.calcScore();
+        }
+    }
+
+    calcScore = () => {
+        var good = 0;  // number of gazes within bounding box
+        var total = 0;  // number of gazes total
+
+        webgazer.setGazeListener(function(data, elapsedTime){
+            if (data == null) {
+                return;
+            }
+
+            var xprediction = data.x;  // these x coordinates are relative to the viewport
+            var yprediction = data.y;  // these y coordinates are relative to the viewport
+            
+            total++;
+
+            // bounding box for gaze
+            if (xprediction > 500 && xprediction < 1100 && yprediction > 0 && yprediction < 400) good++;
+
+            console.log("score at " + elapsedTime + ": " + good + " ~ " + total);
+        }).begin();
     }
 
     render() {
@@ -29,7 +57,7 @@ class HeadView extends React.Component {
                 </Head>
                 Test
 
-                <button onClick={this.onClick} style={{height:'50px', width:'50px', background:'#1c4587', color:'white', position:'absolute', left:this.state.left, top:this.state.top}}>
+                <button onClick={this.onClick} style={{display: this.state.disp, height:this.state.height, width:this.state.height, background:this.state.background, color:this.state.color, position:this.state.position, left:this.state.left, top:this.state.top}}>
                     {this.state.number}
                 </button>
 
