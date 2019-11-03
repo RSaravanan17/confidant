@@ -18,8 +18,8 @@ const App = () => (
             <link rel='icon' href='/favicon.ico' /> 
         </Head>
         <div className="fullscreen">
-        <HeadView />
-        <AudioRecord />
+            <HeadView />
+            <AudioRecord />
         </div>
         <style jsx>{`
             .fullscreen {

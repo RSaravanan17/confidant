@@ -17,17 +17,13 @@ function waitForWebAudio(){
                 encodeAfterRecord: true
             })
             document.getElementById("startButton").addEventListener("click", function(){
-                    console.log("TEST");
                     recorder.startRecording();
                 });
-                document.getElementById("stopButton").addEventListener("click", function(){
-                    recorder.finishRecording();
-                });
-    
-    
-    
+            document.getElementById("stopButton").addEventListener("click", function(){
+                recorder.finishRecording();
+            });
             recorder.onComplete = function(recorder, blob) { 
-            
+                    
             }
         })   
                  
