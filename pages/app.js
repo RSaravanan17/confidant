@@ -28,7 +28,7 @@ const App = () => (
                 position: absolute;
                 overflow: hidden;
                 padding-right: 0px;
-                padding-left: 2.2%;
+                padding-left: 0px;
                 margin: 0;
             }
         `}</style>

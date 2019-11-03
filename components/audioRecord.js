@@ -16,15 +16,17 @@ const AudioRecord = () => (
             <button id="startButton" className = "ssbutton">Start</button>
             <button id="stopButton" className = "ssbutton" disabled>Stop</button>
             <style jsx>{`
+                    @import url('https://fonts.googleapis.com/css?family=DM+Sans:400,700&display=swap');
                     .audioRecord {
                         display: flex;
                         flex-direction: row;
+                        font-family: 'DM Sans', 'sans-serif';
                     }
 
                     .ssbutton {
                         margin-left: 1%;
                         padding: 15px;
-                        font
+                        font-size: calc(11.5px + (9.0)*((100vw - 300px) / (1600 - 300)));
                     }
 
                     #startButton {
@@ -37,6 +39,9 @@ const AudioRecord = () => (
                         color: #f3f3f3ff;
                     }
 
+                    #recordingLabel{
+                        font-size: calc(11.5px + (9.0)*((100vw - 300px) / (1600 - 300)));
+                    }
             `}</style>
         </div>
         
