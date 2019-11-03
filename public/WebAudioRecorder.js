@@ -147,6 +147,7 @@
       initWorker: function() {
         if (this.worker != null)
           this.worker.terminate();
+        console.log("worker made")
         this.onEncoderLoading(this, this.encoding);
         this.worker = new Worker(this.workerDir + WORKER_FILE[this.encoding]);
         var _this = this;

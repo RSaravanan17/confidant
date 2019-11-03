@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "jquery": "^3.4.1",
     "next": "9.1.2",
     "react": "16.11.0",
     "react-dom": "16.11.0"

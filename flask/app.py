@@ -11,7 +11,6 @@ from firebase_admin import auth
 
 import texttospeech
 import speechtotext
-import voca.utils.inference
 
 import requests
 
@@ -49,16 +48,16 @@ def speechToVid():
     vidoutfilename = data['vidoutfilename']
 
     # check if the post request has the file part   
-        if 'file' not in request.files:
-            return jsonify({'error': 'No file part'})
-        file = request.files['file']
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if file.filename == '':
-            return jsonify({'error': 'No selected file'})
-        if file and allowed_file(file.filename):
-            wavinfilename = secure_filename(file.filename)
-            file.save(os.path.join('../public/audio/', wavinfilename, '.wav'))
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'})
+    file = request.files['file']
+    # if user does not select file, browser also
+    # submit an empty part without filename
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'})
+    if file and allowed_file(file.filename):
+        wavinfilename = secure_filename(file.filename)
+        file.save(os.path.join('../public/audio/', wavinfilename, '.wav'))
 
     userText = speechtotext.speechToText('../public/audio/' + wavinfilename + '.wav')
 
@@ -77,7 +76,24 @@ def speechToVid():
 
     return jsonify({'vidfilename': vidoutfilename, 'vidpath': '/public/audio/' + vidoutfilename})
 
-
+@app.route('/v1/audioupload', methods=['POST'])
+def audioupload():
+    print("got upload request")
+    if 'file' not in request.files:
+        flash('No file part')
+    file = request.files['file']
+    if file.filename == '':
+        flash('No selected file')
+    if file:   
+        filename = secure_filename(file.filename)
+        filepath = os.path.join("/tempupload", filename)
+        file.save(filepath)
+    # Now, the file is saved in tempupload/filename
+    text = speechToText(filepath)
+    # judge the response
+    print(text)
+   
+            
 @app.route('/v1/blahblah', methods=['GET'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def blahblah():

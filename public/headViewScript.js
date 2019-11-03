@@ -17,7 +17,6 @@ function waitForWebgazer(){
             // bounding box for gaze
             if (xprediction > 350 && xprediction < 600 && yprediction > 25 && yprediction < 625) good++;
 
-            console.log("score at " + elapsedTime + ": " + good + " ~ " + total);
         }).begin();
     }
     else{

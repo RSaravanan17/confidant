@@ -1,3 +1,4 @@
+azure-cognitiveservices-speech==1.7.0
 astroid==2.3.2
 CacheControl==0.12.5
 cachetools==3.1.1
