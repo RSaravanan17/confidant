@@ -1,6 +1,9 @@
 
 function waitForWebgazer(){
-    if(typeof webgazer !== "undefined"){
+    if(typeof webgazer !== "undefined" && typeof $ !== "undefined"){
+        $.post({
+            url: 'http://localhost:5000/v1/firstQ',
+        });
         webgazer.setGazeListener(function(data, elapsedTime){
             if (data == null) {
                 return;

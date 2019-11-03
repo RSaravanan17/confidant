@@ -16,22 +16,19 @@ import texttospeech
 import speechtotext
     
 import subprocess
-
+import sentencesimilarity
 import requests
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/v1/authenticate": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 
+currentQ = '';
+
 @app.route('/health')
 def index():
     return "I'm alive"
 
-# @app.route('/v1/authenticate', methods=['POST'])
-# @cross_origin(origin='*',headers=['Content-Type','Authorization'])
-# def authenticate():
-#     cred = credentials.Certificate("/etc/confidant/firebase-service-account.json")
-#     firebase_admin.initialize_app(cred)
 def subprocess_cmd(command):
     process = subprocess.Popen(command,stdout=subprocess.PIPE, shell=True)
     proc_stdout = process.communicate()[0].strip()
@@ -40,9 +37,27 @@ def subprocess_cmd(command):
     print(proc_stdout)
 
 
-def speechToVid(wavinfilename):
+@app.route('/v1/firstQ', methods=['POST'])
+def firstQ():
+    print("TEST")
+    q = sentencesimilarity.getNextQuestion("0")
+    print("Q:  " + q)
+    textToVid(q, "../tempupload/botwav.wav")
+    return ""
 
-    vidoutfilename = 'botanimations'
+    
+
+# @app.route('/v1/authenticate', methods=['POST'])
+# @cross_origin(origin='*',headers=['Content-Type','Authorization'])
+# def authenticate():
+#     cred = credentials.Certificate("/etc/confidant/firebase-service-account.json")
+#     firebase_admin.initialize_app(cred)
+
+
+
+def textToVid(text, wavinfilename):
+    texttospeech.textToSpeech(text, wavinfilename)
+
 
     # check if the post request has the file part   
 
@@ -51,17 +66,13 @@ def speechToVid(wavinfilename):
     audio_fname = wavinfilename
     template_fname = '../voca/template/FLAME_sample.ply'
     condition_idx = '3'
-    out_path = '../tmpupload/' + vidoutfilename
     
-    print("going into voca")
-    
-    subprocess_cmd('echo a; cd ../voca; rm -rf ./animation_output/*; rm -rf ./animation_visualization/*; ' +
+    subprocess_cmd('echo a; cd ../voca; rm -rf ./animation_output/*; rm -rf ../public/video.mp4; ' +
     'python run_voca.py --tf_model_fname ./model/gstep_52280.model --ds_fname ./ds_graph/output_graph.pb --audio_fname ' + wavinfilename + ' --template_fname ./template/FLAME_sample.ply --condition_idx 3 --out_path ./animation_output;' + 
-    'python visualize_sequence.py --sequence_path \'animation_output/\' --audio_fname \'' + wavinfilename + '\' --out_path \'../public\';'+
-    'cp ./animation_visualization/video.mp4* ../public/'
+    'python visualize_sequence.py --sequence_path \'animation_output/\' --audio_fname \'' + wavinfilename + '\' --out_path \'../public\';'
     )
 
-@app.route('/v1/audioupload', methods=['POST'])
+@app.route('/v1/audioupload', methods=['GET', 'POST'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def audioupload():
     print("got upload request")
@@ -78,11 +89,11 @@ def audioupload():
         filepath = os.path.join("../tempupload", "temp.wav")
         file.save(filepath)
     # Now, the file is saved in tempupload/filename
-    # userResult = speechtotext.speechToText(filepath)
-    # judge the response
+    userResult = speechtotext.speechToText(filepath)
+    userText = userResult.text;
 
-    speechToVid(filepath)
-
+    similarity = sentencesimilarity.computeSentenceSimilarity(userText)
+    return jsonify({'score' : similarity})
             
 @app.route('/v1/blahblah', methods=['GET'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
