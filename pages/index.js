@@ -4,12 +4,11 @@ import Nav from '../components/nav'
 import Link from 'next/link'
 
 const Home = () => (
-  <div>
+  <div id = "overallDiv">
     <Head>
       <title>Confidant</title>
       <link rel='icon' href='/favicon.ico' />
     </Head>
-
     <Nav />
 
     <div className='hero'>
@@ -32,6 +31,9 @@ const Home = () => (
     </div>
 
     <style jsx>{`
+      #overallDiv{
+        height: 100vh;
+      }
       .hero {
         width: 100%;
         background-color: #f3f3f3ff;
@@ -63,7 +65,7 @@ const Home = () => (
       }
       .row {
         max-width: 880px;
-        margin: 80px auto 40px;
+        margin: 30px auto 40px;
         display: flex;
         flex-direction: row;
         justify-content: space-around;

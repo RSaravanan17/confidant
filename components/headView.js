@@ -4,10 +4,10 @@ import buttonInstance from "./calibration"
 class HeadView extends React.Component {
     constructor(props){
         super(props);
-        this.state = {disp:'block', height:'50px', width:'50px', background:'#1c4587', color:'white', position:'absolute', number: 1, left:'350px', top:'25px'};
+        this.state = {disp:'block', height:'50px', width:'50px', background:'#1c4587', color:'white', position:'absolute', number: 1, left:'600px', top:'100px'};
         this.counter = 5;
-        this.leftDists = ['300px', '1200px', '100px', '1400px', '300px', '1200px'];
-        this.topDists = ['25px', '325px', '625px'];
+        this.leftDists = ['600px', '1200px', '450px', '1400px', '600px', '1200px'];
+        this.topDists = ['100px', '325px', '625px'];
     }
 
     onClick = () => {
@@ -18,7 +18,7 @@ class HeadView extends React.Component {
             var curNumber = this.state.number;
             this.setState({number: curNumber + 1, left: this.leftDists[curNumber], top: this.topDists[Math.floor(curNumber / 2)]});
         } else {
-            this.setState({height:'100px', width:'200px', background:'green', color:'black', number: 'Done', left: '700px', top: '350px'});
+            this.setState({height:'100px', width:'200px', background:'green', color:'black', number: 'Done', left: '850px', top: '350px'});
         }
 
         if (this.state.number == 'Done') {
@@ -42,12 +42,15 @@ class HeadView extends React.Component {
                 var xprediction = data.x;  // these x coordinates are relative to the viewport
                 var yprediction = data.y;  // these y coordinates are relative to the viewport
                 
-                total++;
+                if (xprediction > 300) {
+                    total++;
     
-                // bounding box for gaze
-                if (xprediction > 500 && xprediction < 1100 && yprediction > 0 && yprediction < 400) good++;
-                document.getElementById("eyeContactScore").innerHTML = "Eye contact score: " + good + "/" + total    
+                    // bounding box for gaze
+                    if (xprediction > 500 && xprediction < 1100 && yprediction > 100 && yprediction < 600) good++;
+                    document.getElementById("eyeContactScore").innerHTML = "Eye contact score: " + good + "/" + total
+                }
             }
+            
            //console.log("score at " + elapsedTime + " ms: " + (good / total) * 100 + "% (" + good + "/" + total + ")");
         }).begin();
     }
@@ -78,6 +81,8 @@ class HeadView extends React.Component {
                         color: 'yellow';
                     }
                     #vidshow {
+                        font-size: calc(9.5px + (9.0)*((100vw - 300px) / (1600 - 300)));
+                        font-family: 'DM Sans', 'sans-serif';
                         position: absolute;
                         left: 500px;
                     }

@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 
 const links = [
-  { href: 'https://hacktx19.devpost.com/', label: 'Devpost' },
+  { href: 'https://devpost.com/software/confidant-1tj08x', label: 'Devpost' },
   { href: 'https://hacktx.com/', label: 'HackTX 2019' }
 ].map(link => {
   link.key = `nav-link-${link.href}-${link.label}`
@@ -26,6 +26,7 @@ const Nav = () => (
 
     <style jsx>{`
       :global(body) {
+        background-color: #f3f3f3ff;
         margin: 0;
         font-family: -apple-system, BlinkMacSystemFont, Avenir Next, Avenir,
           Helvetica, sans-serif;

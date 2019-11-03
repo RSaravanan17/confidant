@@ -34,6 +34,7 @@ const App = () => (
                 padding-right: 0px;
                 padding-left: 0px;
                 margin: 0;
+                background-color:#f3f3f3ff;
             }
             #reportCard {
                 top: 30%;
