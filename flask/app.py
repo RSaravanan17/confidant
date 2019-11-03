@@ -90,9 +90,10 @@ def audioupload():
         file.save(filepath)
     # Now, the file is saved in tempupload/filename
     userResult = speechtotext.speechToText(filepath)
-    userText = userResult.text;
+    userText = userResult;
 
     similarity = sentencesimilarity.computeSentenceSimilarity(userText)
+    print(similarity);
     return jsonify({'score' : similarity})
             
 @app.route('/v1/blahblah', methods=['GET'])

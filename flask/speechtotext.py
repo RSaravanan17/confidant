@@ -48,7 +48,6 @@ def speechToText(fn):
 	return res
 	# TODO: return text
 
-speechToText("sample-20191102-1402.wav")
 
 
 

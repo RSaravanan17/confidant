@@ -23,7 +23,7 @@ class HeadView extends React.Component {
 
         if (this.state.number == 'Done') {
             document.getElementById("vidshow").innerHTML = `
-                <video src="./video.mp4"></video>
+                <video autoplay src="./video.mp4"></video>
             `
             this.setState({disp:'none'});
             this.calcScore();
@@ -46,8 +46,8 @@ class HeadView extends React.Component {
 
             // bounding box for gaze
             if (xprediction > 500 && xprediction < 1100 && yprediction > 0 && yprediction < 400) good++;
-
-            //console.log("score at " + elapsedTime + " ms: " + (good / total) * 100 + "% (" + good + "/" + total + ")");
+            document.getElementById("eyeContactScore").innerHTML = "Eye contact score: " + good + "/" + total
+            console.log("score at " + elapsedTime + " ms: " + (good / total) * 100 + "% (" + good + "/" + total + ")");
         }).begin();
     }
 
@@ -68,12 +68,17 @@ class HeadView extends React.Component {
                 <button onClick={this.onClick} style={{display: this.state.disp, height:this.state.height, width:this.state.height, background:this.state.background, color:this.state.color, position:this.state.position, left:this.state.left, top:this.state.top}}>
                     {this.state.number}
                 </button>
+                
 
                 <style jsx>{`
                     .headViewer {
                         width: 100%;
                         height: 45%;
                         color: 'yellow';
+                    }
+                    #vidshow {
+                        position: absolute;
+                        left: 500px;
                     }
                 `}</style>
             </div>
