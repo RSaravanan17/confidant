@@ -5,6 +5,9 @@ from flask import request
 from flask import jsonify
 from flask_cors import CORS, cross_origin
 
+from werkzeug.utils import secure_filename
+import os
+
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import auth
@@ -77,21 +80,23 @@ def speechToVid():
     return jsonify({'vidfilename': vidoutfilename, 'vidpath': '/public/audio/' + vidoutfilename})
 
 @app.route('/v1/audioupload', methods=['POST'])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def audioupload():
     print("got upload request")
     if 'file' not in request.files:
-        flash('No file part')
+        print('No file part')
+        return ''
     file = request.files['file']
     if file.filename == '':
-        flash('No selected file')
+        print('No selected file')
+        return ''
     if file:   
         filename = secure_filename(file.filename)
-        filepath = os.path.join("/tempupload", filename)
+        filepath = os.path.join("../tempupload", "temp.wav")
         file.save(filepath)
     # Now, the file is saved in tempupload/filename
-    text = speechToText(filepath)
+    result = speechtotext.speechToText(filepath)
     # judge the response
-    print(text)
    
             
 @app.route('/v1/blahblah', methods=['GET'])

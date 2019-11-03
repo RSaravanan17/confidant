@@ -30,7 +30,7 @@ function startRec(){
             console.log("complete")
             let fd = new FormData();
             fd.append('fname', 'upload.wav');
-            fd.append('data', blob);
+            fd.append('file', blob);
             $.post({
                 url: 'http://localhost:5000/v1/audioupload',
                 data: fd,
