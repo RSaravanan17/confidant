@@ -22,6 +22,9 @@ class HeadView extends React.Component {
         }
 
         if (this.state.number == 'Done') {
+            document.getElementById("vidshow").innerHTML = `
+                <video src="./video.mp4"></video>
+            `
             this.setState({disp:'none'});
             this.calcScore();
         }
@@ -44,7 +47,7 @@ class HeadView extends React.Component {
             // bounding box for gaze
             if (xprediction > 500 && xprediction < 1100 && yprediction > 0 && yprediction < 400) good++;
 
-            console.log("score at " + elapsedTime + " ms: " + (good / total) * 100 + "% (" + good + "/" + total + ")");
+            //console.log("score at " + elapsedTime + " ms: " + (good / total) * 100 + "% (" + good + "/" + total + ")");
         }).begin();
     }
 
@@ -55,8 +58,9 @@ class HeadView extends React.Component {
                     <script type="text/javascript" src="/headViewScript.js"></script>
                     <script type="text/javascript" src="/webgazer.js"></script>
                 </Head>
-                Test
+                <div id="vidshow">
 
+                </div>
                 <button onClick={this.onClick} style={{display: this.state.disp, height:this.state.height, width:this.state.height, background:this.state.background, color:this.state.color, position:this.state.position, left:this.state.left, top:this.state.top}}>
                     {this.state.number}
                 </button>
