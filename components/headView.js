@@ -23,7 +23,7 @@ class HeadView extends React.Component {
 
         if (this.state.number == 'Done') {
             document.getElementById("vidshow").innerHTML = `
-                <video autoplay src="./video.mp4"></video>
+                <video id="videoitself" autoplay src="./video.mp4"></video>
             `
             this.setState({disp:'none'});
             this.calcScore();

@@ -43,7 +43,7 @@ def firstQ():
     q = sentencesimilarity.getNextQuestion("0")
     print("Q:  " + q)
     textToVid(q, "../tempupload/botwav.wav")
-    return ""
+    return jsonify({"begin": true})
 
     
 
