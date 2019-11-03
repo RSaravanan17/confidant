@@ -42,12 +42,15 @@ class HeadView extends React.Component {
                 var xprediction = data.x;  // these x coordinates are relative to the viewport
                 var yprediction = data.y;  // these y coordinates are relative to the viewport
                 
-                total++;
+                if (xprediction > 300) {
+                    total++;
     
-                // bounding box for gaze
-                if (xprediction > 500 && xprediction < 1100 && yprediction > 100 && yprediction < 600) good++;
-                document.getElementById("eyeContactScore").innerHTML = "Eye contact score: " + good + "/" + total    
+                    // bounding box for gaze
+                    if (xprediction > 500 && xprediction < 1100 && yprediction > 100 && yprediction < 600) good++;
+                    document.getElementById("eyeContactScore").innerHTML = "Eye contact score: " + good + "/" + total
+                }
             }
+            
            //console.log("score at " + elapsedTime + " ms: " + (good / total) * 100 + "% (" + good + "/" + total + ")");
         }).begin();
     }
