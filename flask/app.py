@@ -14,6 +14,8 @@ from firebase_admin import auth
 
 import texttospeech
 import speechtotext
+    
+import subprocess
 
 import requests
 
@@ -30,74 +32,57 @@ def index():
 # def authenticate():
 #     cred = credentials.Certificate("/etc/confidant/firebase-service-account.json")
 #     firebase_admin.initialize_app(cred)
+def subprocess_cmd(command):
+    process = subprocess.Popen(command,stdout=subprocess.PIPE, shell=True)
+    proc_stdout = process.communicate()[0].strip()
+    proc_stderr = process.communicate()[1].strip();
+    print(proc_stderr)
+    print(proc_stdout)
 
-@app.route('/v1/speechToVid', methods=['POST'])
-@cross_origin(origin='*',headers=['Content-Type','Authorization'])
-def speechToVid():
-    try:
-        data = request.args.to_dict()
-    except ValueError:
-        return jsonify({'error': "JSON data invalid or no input data"})
 
-    # sanitization checks for input data
-    if 'wavoutfilename' not in data or data['wavoutfilename'] is None or data['wavoutfilename'] == '':
-        return jsonify({'error': "No output .wav file name specified"})
+def speechToVid(wavinfilename):
 
-    if 'vidoutfilename' not in data or data['vidoutfilename'] is None or data['vidoutfilename'] == '':
-        return jsonify({'error': "No output video file name specified"})
-
-    wavinfilename = ''
-    wavoutfilename = data['wavoutfilename']
-    vidoutfilename = data['vidoutfilename']
+    vidoutfilename = 'botanimations'
 
     # check if the post request has the file part   
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file part'})
-    file = request.files['file']
-    # if user does not select file, browser also
-    # submit an empty part without filename
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'})
-    if file and allowed_file(file.filename):
-        wavinfilename = secure_filename(file.filename)
-        file.save(os.path.join('../public/audio/', wavinfilename, '.wav'))
 
-    userText = speechtotext.speechToText('../public/audio/' + wavinfilename + '.wav')
-
-    # somehow figure out what to say to the user
-    responseText = ''
-    texttospeech.textToSpeech(responseText, wavoutfilename)
-
-    tf_model_fname = ''
-    ds_fname = ''
-    audio_fname = '../public/audio/' + wavoutfilename + '.wav'
-    template_fname = ''
-    condition_idx = ''
-    out_path = '../public/video/' + vidoutfilename + '.mp4'
-        
-    inference(tf_model_fname, ds_fname, audio_fname, template_fname, condition_idx, out_path)
-
-    return jsonify({'vidfilename': vidoutfilename, 'vidpath': '/public/audio/' + vidoutfilename})
+    tf_model_fname = '../voca/model/gstep_52280.model'
+    ds_fname = '../voca/ds_graph/output_graph.pb'
+    audio_fname = wavinfilename
+    template_fname = '../voca/template/FLAME_sample.ply'
+    condition_idx = '3'
+    out_path = '../tmpupload/' + vidoutfilename
+    
+    print("going into voca")
+    
+    subprocess_cmd('echo a; cd ../voca; rm -rf ./animation_output/*; rm -rf ./animation_visualization/*; ' +
+    'python run_voca.py --tf_model_fname ./model/gstep_52280.model --ds_fname ./ds_graph/output_graph.pb --audio_fname ' + wavinfilename + ' --template_fname ./template/FLAME_sample.ply --condition_idx 3 --out_path ./animation_output;' + 
+    'python visualize_sequence.py --sequence_path \'animation_output/\' --audio_fname \'' + wavinfilename + '\' --out_path \'../public\';'+
+    'cp ./animation_visualization/video.mp4* ../public/'
+    )
 
 @app.route('/v1/audioupload', methods=['POST'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def audioupload():
     print("got upload request")
+    filepath = ''
     if 'file' not in request.files:
         print('No file part')
-        return ''
+        return jsonify({'error': 'No file part'})
     file = request.files['file']
     if file.filename == '':
         print('No selected file')
-        return ''
+        return jsonify({'error': 'No selected file'})
     if file:   
         filename = secure_filename(file.filename)
         filepath = os.path.join("../tempupload", "temp.wav")
         file.save(filepath)
     # Now, the file is saved in tempupload/filename
-    result = speechtotext.speechToText(filepath)
+    # userResult = speechtotext.speechToText(filepath)
     # judge the response
-   
+
+    speechToVid(filepath)
+
             
 @app.route('/v1/blahblah', methods=['GET'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
