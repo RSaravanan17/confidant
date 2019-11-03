@@ -38,16 +38,17 @@ class HeadView extends React.Component {
             if (data == null) {
                 return;
             }
-
-            var xprediction = data.x;  // these x coordinates are relative to the viewport
-            var yprediction = data.y;  // these y coordinates are relative to the viewport
-            
-            total++;
-
-            // bounding box for gaze
-            if (xprediction > 500 && xprediction < 1100 && yprediction > 0 && yprediction < 400) good++;
-            document.getElementById("eyeContactScore").innerHTML = "Eye contact score: " + good + "/" + total
-            console.log("score at " + elapsedTime + " ms: " + (good / total) * 100 + "% (" + good + "/" + total + ")");
+            if(window.eyeRecord){
+                var xprediction = data.x;  // these x coordinates are relative to the viewport
+                var yprediction = data.y;  // these y coordinates are relative to the viewport
+                
+                total++;
+    
+                // bounding box for gaze
+                if (xprediction > 500 && xprediction < 1100 && yprediction > 0 && yprediction < 400) good++;
+                document.getElementById("eyeContactScore").innerHTML = "Eye contact score: " + good + "/" + total    
+            }
+           //console.log("score at " + elapsedTime + " ms: " + (good / total) * 100 + "% (" + good + "/" + total + ")");
         }).begin();
     }
 
@@ -63,7 +64,7 @@ class HeadView extends React.Component {
                     <script type="text/javascript" src="/webgazer.js"></script>
                 </Head>
                 <div id="vidshow">
-
+                    Loading initial animation. Animation loading can take 30 seconds to a 1 minute. Complete the calibration sequence while you wait!
                 </div>
                 <button onClick={this.onClick} style={{display: this.state.disp, height:this.state.height, width:this.state.height, background:this.state.background, color:this.state.color, position:this.state.position, left:this.state.left, top:this.state.top}}>
                     {this.state.number}

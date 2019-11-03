@@ -32,19 +32,19 @@ def index():
 def subprocess_cmd(command):
     process = subprocess.Popen(command,stdout=subprocess.PIPE, shell=True)
     proc_stdout = process.communicate()[0].strip()
-    proc_stderr = process.communicate()[1].strip();
-    print(proc_stderr)
     print(proc_stdout)
 
 
 @app.route('/v1/firstQ', methods=['POST'])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def firstQ():
     print("TEST")
-    q = sentencesimilarity.getNextQuestion("0")
+    q = sentencesimilarity.getFirstQuestion()
     print("Q:  " + q)
     textToVid(q, "../tempupload/botwav.wav")
-    return jsonify({"begin": true})
-
+    
+    return jsonify({"video": "./video.mp4"})
+    
     
 
 # @app.route('/v1/authenticate', methods=['POST'])
@@ -71,6 +71,7 @@ def textToVid(text, wavinfilename):
     'python run_voca.py --tf_model_fname ./model/gstep_52280.model --ds_fname ./ds_graph/output_graph.pb --audio_fname ' + wavinfilename + ' --template_fname ./template/FLAME_sample.ply --condition_idx 3 --out_path ./animation_output;' + 
     'python visualize_sequence.py --sequence_path \'animation_output/\' --audio_fname \'' + wavinfilename + '\' --out_path \'../public\';'
     )
+    print("done visualizing text " + text)
 
 @app.route('/v1/audioupload', methods=['GET', 'POST'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
@@ -87,13 +88,15 @@ def audioupload():
     if file:   
         filename = secure_filename(file.filename)
         filepath = os.path.join("../tempupload", "temp.wav")
-        file.save(filepath)
+        file.save(filepath) 
     # Now, the file is saved in tempupload/filename
     userResult = speechtotext.speechToText(filepath)
     userText = userResult;
 
     similarity = sentencesimilarity.computeSentenceSimilarity(userText)
-    print(similarity);
+    botResponse = sentencesimilarity.getNextResponse(similarity)
+    textToVid(botResponse, "../tempupload/botwav.wav")
+
     return jsonify({'score' : similarity})
             
 @app.route('/v1/blahblah', methods=['GET'])

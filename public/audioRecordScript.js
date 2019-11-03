@@ -31,6 +31,10 @@ function startRec(){
             let fd = new FormData();
             fd.append('fname', 'upload.wav');
             fd.append('file', blob);
+            document.getElementById("vidshow").innerHTML = `
+                Loading response. Please wait...
+            `
+            window.eyeRecord = false
             $.post({
                 url: 'http://localhost:5000/v1/audioupload',
                 data: fd,
@@ -39,6 +43,11 @@ function startRec(){
             }, function(data){ 
                 let score = data.score 
                 console.log("new score " + score)
+                //Refresh the video element. 
+                document.getElementById("vidshow").innerHTML = `
+                    <video id="videoitself" autoplay src="./video.mp4"></video>
+                `
+                window.eyeRecord = true
                 $("#reportCard").append ("<p>Response Empathy Score: " + (Math.floor((score * 10000)) / 100) + "%</p>")
             })
         }

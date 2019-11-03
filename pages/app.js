@@ -21,7 +21,7 @@ const App = () => (
             <AudioRecord />
             
             <div id="reportCard">
-                <div id="eyeContactScore"></div>
+                <h3 id="eyeContactScore"></h3>
             </div>
         </div>
         <style jsx>{`

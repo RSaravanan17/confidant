@@ -3,11 +3,10 @@ function waitForWebgazer(){
     if(typeof webgazer !== "undefined" && typeof $ !== "undefined"){
         $.post({
             url: 'http://localhost:5000/v1/firstQ',
-        }, function () {
-            let vid = document.getElementById("videoitself")
-            vid.pause()
-            vid.load()
-            vid.play()
+        }, function (data) {
+            document.getElementById("vidshow").innerHTML = `
+                <video id="videoitself" autoplay src="./video.mp4"></video>
+            `
         });
         webgazer.setGazeListener(function(data, elapsedTime){
             if (data == null) {

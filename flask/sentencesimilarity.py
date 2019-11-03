@@ -1,17 +1,18 @@
 import requests
 import string
 import json
+
+import random
 url = "https://twinword-text-similarity-v1.p.rapidapi.com/similarity/"
 
 currentQuestionId = 0
-idToQuestion = dict()
-idToQuestion[0] = "My dog died."
+idToQuestion = ["My dog died. ", "I really miss my dog. His name was Buddy.", "I hope my dog's happy, wherever he is."]
+goodResponses = ["Thanks for understanding, ", "I'm grateful that you get it, ", "You're a good listener, "]
+badResponses = ["You're so rude, ", "Why would you say that? " , "Don't be so mean, "]
 
-questionToId = dict()
-questionToId["My dog died."] = 0
-
-questionToAnswer = dict()
-questionToAnswer["My dog died."] = ["I'm really sorry to hear that, it will get better soon.", "My deepest condolences, I empathize with you."]
+questionToAnswer = [[], [], []]
+questionToAnswer[0] = ["I'm really sorry to hear that, it will get better soon.", "My deepest condolences, I empathize with you."]
+questionToAnswer[1] = ["It's okay to miss loved ones. ", "I miss him too"]
 
 headers = {
     'x-rapidapi-host': "twinword-text-similarity-v1.p.rapidapi.com",
@@ -24,17 +25,28 @@ def private(text1, text2):
 	obj = json.loads(response.text)
 	return obj['similarity']
 
-def getNextQuestion(curQuestion):
-	if(curQuestion == "0"): 
-		currentQuestion = idToQuestion[0]
-		currentQuestionId = 1
+def getNextResponse(score):
+	emoResponse = ""
+	if score > 0.35: 
+		emoResponse = goodResponses[random.randint(0, len(goodResponses)-1)]
 	else:
-		currentQuestion = idToQuestion[currentQuestionId]
-		currentQuestionId = currentQuestionId + 1
+		emoResponse = badResponses[random.randint(0, len(badResponses)-1)]
+	global currentQuestionId
+	currentQuestionId = currentQuestionId + 1
+	return emoResponse + getQuestion(currentQuestionId)
+def getFirstQuestion():
+	currentQuestionId = 0
+	return idToQuestion[0]
+def getQuestion(id):
+	if(id > len(idToQuestion)):
+		return ""
+	currentQuestion = idToQuestion[id]
 	return currentQuestion
 
 def computeSentenceSimilarity(usersaid):
-	answers = questionToAnswer[idToQuestion[currentQuestionId]]
+	global currentQuestionId
+	global questionToAnswer
+	answers = questionToAnswer[currentQuestionId]
 	maxSim = -999999
 	usersaid.lower()
 	for answer in answers:
