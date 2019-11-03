@@ -29,7 +29,7 @@ def index():
 #     cred = credentials.Certificate("/etc/confidant/firebase-service-account.json")
 #     firebase_admin.initialize_app(cred)
 
-@app.route('/v1/speechToVid', methods=['GET','POST'])
+@app.route('/v1/speechToVid', methods=['POST'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def speechToVid():
     try:
@@ -38,18 +38,27 @@ def speechToVid():
         return jsonify({'error': "JSON data invalid or no input data"})
 
     # sanitization checks for input data
-    if 'wavinfilename' not in data or data['wavinfilename'] is None or data['wavinfilename'] == '':
-        return jsonify({'error': "No input .wav file name specified"})
-
     if 'wavoutfilename' not in data or data['wavoutfilename'] is None or data['wavoutfilename'] == '':
         return jsonify({'error': "No output .wav file name specified"})
 
     if 'vidoutfilename' not in data or data['vidoutfilename'] is None or data['vidoutfilename'] == '':
         return jsonify({'error': "No output video file name specified"})
 
-    wavinfilename = data['wavinfilename']
+    wavinfilename = ''
     wavoutfilename = data['wavoutfilename']
     vidoutfilename = data['vidoutfilename']
+
+    # check if the post request has the file part   
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file part'})
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            return jsonify({'error': 'No selected file'})
+        if file and allowed_file(file.filename):
+            wavinfilename = secure_filename(file.filename)
+            file.save(os.path.join('../public/audio/', wavinfilename, '.wav'))
 
     userText = speechtotext.speechToText('../public/audio/' + wavinfilename + '.wav')
 
@@ -66,7 +75,7 @@ def speechToVid():
         
     inference(tf_model_fname, ds_fname, audio_fname, template_fname, condition_idx, out_path)
 
-    return jsonify({'vidfilename': vidoutfilename})
+    return jsonify({'vidfilename': vidoutfilename, 'vidpath': '/public/audio/' + vidoutfilename})
 
 
 @app.route('/v1/blahblah', methods=['GET'])
