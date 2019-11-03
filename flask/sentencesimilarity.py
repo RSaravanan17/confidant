@@ -6,13 +6,13 @@ import random
 url = "https://twinword-text-similarity-v1.p.rapidapi.com/similarity/"
 
 currentQuestionId = 0
-idToQuestion = ["My dog died. ", "I really miss my dog. His name was Buddy.", "I hope my dog's happy, wherever he is."]
+idToQuestion = ["My dog died. ", "I really miss my dog. His name was Buddy.", "I hope Buddy is happy, wherever he is."]
 goodResponses = ["Thanks for understanding, ", "I'm grateful that you get it, ", "You're a good listener, "]
 badResponses = ["You're so rude, ", "Why would you say that? " , "Don't be so mean, "]
 
 questionToAnswer = [[], [], []]
 questionToAnswer[0] = ["I'm really sorry to hear that, it will get better soon.", "My deepest condolences, I empathize with you."]
-questionToAnswer[1] = ["It's okay to miss loved ones. ", "I miss him too"]
+questionToAnswer[1] = ["It's okay to miss loved ones. ", "I miss him too", "I'm sure Buddy misses you too."]
 
 headers = {
     'x-rapidapi-host': "twinword-text-similarity-v1.p.rapidapi.com",
