@@ -10,7 +10,6 @@ const AudioRecord = () => (
         <div className="audioRecord">
             <button id="startButton" >Start</button>
             <button id="stopButton">Stop</button>
-
         </div>
 
     </div>

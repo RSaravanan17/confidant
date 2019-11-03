@@ -845,7 +845,7 @@ var objectdetect = (function() {
   tracking.initUserMedia_ = function(element, opt_options) {
     window.navigator.getUserMedia({
       video: true,
-      audio: opt_options.audio
+      audio: true
     }, function(stream) {
         try {
           element.src = window.URL.createObjectURL(stream);
@@ -11017,7 +11017,7 @@ function store_points(x, y, k) {
 
         // Request webcam access under specific constraints
         // WAIT for access
-        navigator.mediaDevices.getUserMedia( webgazer.params.camConstraints )
+        navigator.mediaDevices.getUserMedia( /**JROPER */ {video: true} )
         .then(function(stream){ // set the stream
           videoStream = stream;
           init(videoStream);
