@@ -3,6 +3,7 @@ import string
 import json
 url = "https://twinword-text-similarity-v1.p.rapidapi.com/similarity/"
 
+currentQuestionId = 0
 idToQuestion = dict()
 idToQuestion[0] = "My dog died."
 
@@ -24,13 +25,16 @@ def private(text1, text2):
 	return obj['similarity']
 
 def getNextQuestion(curQuestion):
-	if curQuestion == "0" or curQuestion == "" or curQuestion == None or curQuestion == 0:
-		return idToQuestion[0]
+	if(curQuestion == "0"): 
+		currentQuestion = idToQuestion[0]
+		currentQuestionId = 1
 	else:
-		return idToQuestion[questionToId[question] + 1]
+		currentQuestion = idToQuestion[currentQuestionId]
+		currentQuestionId = currentQuestionId + 1
+	return currentQuestion
 
-def computeSentenceSimilarity(question, usersaid):
-	answers = questionToAnswer[question]
+def computeSentenceSimilarity(usersaid):
+	answers = questionToAnswer[idToQuestion[currentQuestionId]]
 	maxSim = -999999
 	usersaid.lower()
 	for answer in answers:
