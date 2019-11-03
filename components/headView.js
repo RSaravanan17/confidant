@@ -78,6 +78,8 @@ class HeadView extends React.Component {
                         color: 'yellow';
                     }
                     #vidshow {
+                        font-size: calc(9.5px + (9.0)*((100vw - 300px) / (1600 - 300)));
+                        font-family: 'DM Sans', 'sans-serif';
                         position: absolute;
                         left: 500px;
                     }
