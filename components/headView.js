@@ -44,7 +44,7 @@ class HeadView extends React.Component {
             // bounding box for gaze
             if (xprediction > 500 && xprediction < 1100 && yprediction > 0 && yprediction < 400) good++;
 
-            console.log("score at " + elapsedTime + ": " + good + " ~ " + total);
+            console.log("score at " + elapsedTime + " ms: " + (good / total) * 100 + "% (" + good + "/" + total + ")");
         }).begin();
     }
 
