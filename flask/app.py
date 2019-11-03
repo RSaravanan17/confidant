@@ -68,7 +68,7 @@ def textToVid(text, wavinfilename):
     template_fname = '../voca/template/FLAME_sample.ply'
     condition_idx = '3'
     
-    subprocess_cmd('echo a; cd ../voca; rm -rf ./animation_output/*; rm -rf ../public/video.mp4; ' +
+    subprocess_cmd('echo a; cd ../voca; rm -rf ./animation_output/*; rm -rf ../public/video.mp4; rm -rf ../public/img/*;' +
     'python run_voca.py --tf_model_fname ./model/gstep_52280.model --ds_fname ./ds_graph/output_graph.pb --audio_fname ' + wavinfilename + ' --template_fname ./template/FLAME_sample.ply --condition_idx 3 --out_path ./animation_output;' + 
     'python visualize_sequence.py --sequence_path \'animation_output/\' --audio_fname \'' + wavinfilename + '\' --out_path \'../public\';'
     )
