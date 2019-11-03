@@ -26,7 +26,7 @@ const AudioRecord = () => (
                     .ssbutton {
                         margin-left: 1%;
                         padding: 15px;
-                        font-size: calc(11.5px + (9.0)*((100vw - 300px) / (1600 - 300)));
+                        font-size: calc(7.5px + (9.0)*((100vw - 300px) / (1600 - 300)));
                     }
 
                     #startButton {
@@ -40,7 +40,7 @@ const AudioRecord = () => (
                     }
 
                     #recordingLabel{
-                        font-size: calc(11.5px + (9.0)*((100vw - 300px) / (1600 - 300)));
+                        font-size: calc(7.5px + (9.0)*((100vw - 300px) / (1600 - 300)));
                     }
             `}</style>
         </div>
